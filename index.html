@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ms Dev</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <section class="panel form-panel">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">Business Tool</p>
+          <h1>Professional Invoice Generator</h1>
+          <p class="subtext">Create invoices, add products, calculate totals automatically, and export to PDF.</p>
+        </div>
+        <button id="downloadPdfBtn" class="btn btn-primary">Download PDF</button>
+      </div>
+
+      <div class="section">
+        <h2>Business Details</h2>
+        <div class="grid grid-2">
+          <label class="field">
+            <span>Business Name</span>
+            <input id="fromName" type="text" value="Your Company Ltd." />
+          </label>
+          <label class="field">
+            <span>Invoice Number</span>
+            <input id="invoiceNo" type="text" value="INV-1001" />
+          </label>
+          <label class="field">
+            <span>Email</span>
+            <input id="fromEmail" type="email" value="billing@yourcompany.com" />
+          </label>
+          <label class="field">
+            <span>Phone</span>
+            <input id="fromPhone" type="text" value="+880 1234-567890" />
+          </label>
+          <label class="field">
+            <span>Invoice Date</span>
+            <input id="invoiceDate" type="date" />
+          </label>
+          <label class="field">
+            <span>Due Date</span>
+            <input id="dueDate" type="date" />
+          </label>
+        </div>
+        <label class="field">
+          <span>Business Address</span>
+          <textarea id="fromAddress">House 12, Road 5, Dhaka, Bangladesh</textarea>
+        </label>
+      </div>
+
+      <div class="section">
+        <h2>Client Details</h2>
+        <div class="grid grid-2">
+          <label class="field">
+            <span>Client Name</span>
+            <input id="clientName" type="text" value="Client Name" />
+          </label>
+          <label class="field">
+            <span>Client Email</span>
+            <input id="clientEmail" type="email" value="client@example.com" />
+          </label>
+        </div>
+        <label class="field">
+          <span>Client Address</span>
+          <textarea id="clientAddress">Client company address goes here</textarea>
+        </label>
+      </div>
+
+      <div class="section">
+        <div class="section-row">
+          <h2>Invoice Items</h2>
+          <button id="addItemBtn" class="btn btn-soft">+ Add Product</button>
+        </div>
+        <div id="itemsContainer" class="items-wrap"></div>
+      </div>
+
+      <div class="section">
+        <h2>Charges & Notes</h2>
+        <div class="grid grid-3">
+          <label class="field">
+            <span>Tax (%)</span>
+            <input id="taxRate" type="number" min="0" step="0.01" value="5" />
+          </label>
+          <label class="field">
+            <span>Discount</span>
+            <input id="discount" type="number" min="0" step="0.01" value="0" />
+          </label>
+          <label class="field">
+            <span>Shipping</span>
+            <input id="shipping" type="number" min="0" step="0.01" value="0" />
+          </label>
+        </div>
+        <label class="field">
+          <span>Notes / Terms</span>
+          <textarea id="notes">Thank you for your business. Please make the payment by the due date.</textarea>
+        </label>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-row"><span>Subtotal</span><strong id="subtotalValue">$0.00</strong></div>
+        <div class="summary-row"><span>Tax</span><strong id="taxValue">$0.00</strong></div>
+        <div class="summary-row"><span>Discount</span><strong id="discountValue">$0.00</strong></div>
+        <div class="summary-row"><span>Shipping</span><strong id="shippingValue">$0.00</strong></div>
+        <div class="summary-row total"><span>Total</span><strong id="totalValue">$0.00</strong></div>
+      </div>
+    </section>
+
+    <section class="panel preview-panel">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">Live Preview</p>
+          <h2>Invoice Preview</h2>
+          <p class="subtext">The preview updates instantly while you edit the invoice.</p>
+        </div>
+      </div>
+      <div id="invoicePreview" class="invoice-preview"></div>
+    </section>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
