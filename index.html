@@ -3,124 +3,207 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ms Dev</title>
+  <title>Professional Invoice Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="app-shell">
-    <section class="panel form-panel">
-      <div class="panel-head">
-        <div>
-          <p class="eyebrow">Business Tool</p>
-          <h1>MS Dev Invoice </h1>
-          <p class="subtext">Create invoices, add products, calculate totals automatically, and export to PDF.</p>
+  <div class="container">
+    <div class="hero">
+      <div>
+        <h1>Professional Invoice Generator</h1>
+        <p>Create polished invoices, add unlimited products or services, support BDT and USD, include bank or other payment methods, add notes, and export the final invoice as a PDF.</p>
+      </div>
+      <div class="actions">
+        <button class="btn btn-light" id="newInvoiceBtn">New Invoice</button>
+        <button class="btn btn-light" id="printBtn">Print</button>
+        <button class="btn btn-primary" id="downloadPdfBtn">Download PDF</button>
+      </div>
+    </div>
+
+    <div class="layout">
+      <div class="panel">
+        <div class="panel-header">
+          <h2>Invoice Details</h2>
+          <p>Fill in your business, customer, products, payment details, tax, discount, and notes.</p>
         </div>
-        <button id="downloadPdfBtn" class="btn btn-primary">Download PDF</button>
+        <div class="panel-body">
+          <div class="grid grid-3">
+            <div class="field">
+              <label for="currency">Currency</label>
+              <select id="currency">
+                <option value="BDT">BDT (৳)</option>
+                <option value="USD">USD ($)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="invoiceNumber">Invoice Number</label>
+              <input id="invoiceNumber" type="text" placeholder="INV-1001" />
+            </div>
+            <div class="field">
+              <label for="invoiceStatus">Status</label>
+              <select id="invoiceStatus">
+                <option value="Unpaid">Unpaid</option>
+                <option value="Paid">Paid</option>
+                <option value="Partial">Partial</option>
+                <option value="Due">Due</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-2" style="margin-top:16px;">
+            <div class="field">
+              <label for="invoiceDate">Invoice Date</label>
+              <input id="invoiceDate" type="date" />
+            </div>
+            <div class="field">
+              <label for="dueDate">Due Date</label>
+              <input id="dueDate" type="date" />
+            </div>
+          </div>
+
+          <div class="section-title"><h3>From / Your Business</h3></div>
+          <div class="grid grid-2">
+            <div class="field"><label for="fromName">Business Name</label><input id="fromName" type="text" placeholder="Your Company Name" /></div>
+            <div class="field"><label for="fromEmail">Email</label><input id="fromEmail" type="email" placeholder="hello@company.com" /></div>
+            <div class="field"><label for="fromPhone">Phone</label><input id="fromPhone" type="text" placeholder="+8801XXXXXXXXX" /></div>
+            <div class="field"><label for="fromAddress">Address</label><textarea id="fromAddress" placeholder="Business address"></textarea></div>
+          </div>
+
+          <div class="section-title"><h3>Bill To / Customer</h3></div>
+          <div class="grid grid-2">
+            <div class="field"><label for="clientName">Client Name</label><input id="clientName" type="text" placeholder="Client or Company" /></div>
+            <div class="field"><label for="clientEmail">Email</label><input id="clientEmail" type="email" placeholder="client@example.com" /></div>
+            <div class="field"><label for="clientPhone">Phone</label><input id="clientPhone" type="text" placeholder="Client phone number" /></div>
+            <div class="field"><label for="clientAddress">Address</label><textarea id="clientAddress" placeholder="Client address"></textarea></div>
+          </div>
+
+          <div class="section-title">
+            <h3>Products / Services</h3>
+            <button class="btn btn-light" type="button" id="addItemBtn">+ Add Item</button>
+          </div>
+          <div class="items-wrap" id="itemsContainer"></div>
+
+          <div class="section-title"><h3>Payment, Tax & Notes</h3></div>
+          <div class="grid grid-2">
+            <div class="field">
+              <label for="paymentMethod">Payment Method</label>
+              <input id="paymentMethod" type="text" placeholder="Bank Transfer / bKash / Nagad / PayPal / Cash" />
+            </div>
+            <div class="field">
+              <label for="paymentDetails">Bank / Payment Details</label>
+              <textarea id="paymentDetails" placeholder="Bank Name: ...
+Account Name: ...
+Account No: ...
+Routing/SWIFT: ...
+Or mobile wallet details..."></textarea>
+            </div>
+            <div class="field">
+              <label for="taxRate">Tax (%)</label>
+              <input id="taxRate" type="number" min="0" step="0.01" value="0" />
+            </div>
+            <div class="field">
+              <label for="discount">Discount</label>
+              <input id="discount" type="number" min="0" step="0.01" value="0" />
+            </div>
+            <div class="field" style="grid-column: 1 / -1;">
+              <label for="notes">Notes / Terms</label>
+              <textarea id="notes" placeholder="Thank you for your business. Payment is due by the due date. Add any custom note or terms here."></textarea>
+            </div>
+          </div>
+
+          <div class="totals-box">
+            <div class="totals-row"><span>Subtotal</span><span id="subtotalDisplay">৳0.00</span></div>
+            <div class="totals-row"><span>Tax</span><span id="taxDisplay">৳0.00</span></div>
+            <div class="totals-row"><span>Discount</span><span id="discountDisplay">৳0.00</span></div>
+            <div class="totals-row total"><span>Grand Total</span><strong id="grandTotalDisplay">৳0.00</strong></div>
+          </div>
+        </div>
       </div>
 
-      <div class="section">
-        <h2>Business Details</h2>
-        <div class="grid grid-2">
-          <label class="field">
-            <span>Business Name</span>
-            <input id="fromName" type="text" value="Your Company Ltd." />
-          </label>
-          <label class="field">
-            <span>Invoice Number</span>
-            <input id="invoiceNo" type="text" value="INV-1001" />
-          </label>
-          <label class="field">
-            <span>Email</span>
-            <input id="fromEmail" type="email" value="billing@yourcompany.com" />
-          </label>
-          <label class="field">
-            <span>Phone</span>
-            <input id="fromPhone" type="text" value="+880 1234-567890" />
-          </label>
-          <label class="field">
-            <span>Invoice Date</span>
-            <input id="invoiceDate" type="date" />
-          </label>
-          <label class="field">
-            <span>Due Date</span>
-            <input id="dueDate" type="date" />
-          </label>
+      <div class="panel preview-panel invoice-preview-wrap">
+        <div class="preview-toolbar">
+          <div>
+            <h2 style="margin:0; font-size:20px;">Live Invoice Preview</h2>
+            <span>Everything updates automatically as you type.</span>
+          </div>
         </div>
-        <label class="field">
-          <span>Business Address</span>
-          <textarea id="fromAddress">House 12, Road 5, Dhaka, Bangladesh</textarea>
-        </label>
-      </div>
+        <div class="invoice-paper">
+          <div id="invoice">
+            <div class="inv-top">
+              <div>
+                <div class="brand-title">INVOICE</div>
+                <div id="previewFromName" style="font-size:20px;font-weight:700;">Your Company Name</div>
+                <div class="muted" id="previewFromAddress">Business address</div>
+                <div class="muted" id="previewFromContact">hello@company.com · +8801XXXXXXXXX</div>
+              </div>
+              <div style="text-align:right; min-width: 240px;">
+                <div class="status-pill" id="previewStatus">UNPAID</div>
+              </div>
+            </div>
 
-      <div class="section">
-        <h2>Client Details</h2>
-        <div class="grid grid-2">
-          <label class="field">
-            <span>Client Name</span>
-            <input id="clientName" type="text" value="Client Name" />
-          </label>
-          <label class="field">
-            <span>Client Email</span>
-            <input id="clientEmail" type="email" value="client@example.com" />
-          </label>
-        </div>
-        <label class="field">
-          <span>Client Address</span>
-          <textarea id="clientAddress">Client company address goes here</textarea>
-        </label>
-      </div>
+            <div class="party-grid">
+              <div class="party-card">
+                <h4>From</h4>
+                <div id="prevFromBlock"></div>
+              </div>
+              <div class="party-card">
+                <h4>Bill To</h4>
+                <div id="prevClientBlock"></div>
+              </div>
+            </div>
 
-      <div class="section">
-        <div class="section-row">
-          <h2>Invoice Items</h2>
-          <button id="addItemBtn" class="btn btn-soft">+ Add Product</button>
-        </div>
-        <div id="itemsContainer" class="items-wrap"></div>
-      </div>
+            <div class="info-grid">
+              <div class="info-box"><small>Invoice No</small><div id="previewInvoiceNumber">INV-1001</div></div>
+              <div class="info-box"><small>Invoice Date</small><div id="previewInvoiceDate">—</div></div>
+              <div class="info-box"><small>Due Date</small><div id="previewDueDate">—</div></div>
+              <div class="info-box"><small>Currency</small><div id="previewCurrency">BDT</div></div>
+            </div>
 
-      <div class="section">
-        <h2>Charges & Notes</h2>
-        <div class="grid grid-3">
-          <label class="field">
-            <span>Tax (%)</span>
-            <input id="taxRate" type="number" min="0" step="0.01" value="5" />
-          </label>
-          <label class="field">
-            <span>Discount</span>
-            <input id="discount" type="number" min="0" step="0.01" value="0" />
-          </label>
-          <label class="field">
-            <span>Shipping</span>
-            <input id="shipping" type="number" min="0" step="0.01" value="0" />
-          </label>
-        </div>
-        <label class="field">
-          <span>Notes / Terms</span>
-          <textarea id="notes">Thank you for your business. Please make the payment by the due date.</textarea>
-        </label>
-      </div>
+            <table class="items-table">
+              <thead>
+                <tr>
+                  <th>Description</th>
+                  <th>Qty</th>
+                  <th>Rate</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody id="previewItemsBody"></tbody>
+            </table>
 
-      <div class="summary-card">
-        <div class="summary-row"><span>Subtotal</span><strong id="subtotalValue">$0.00</strong></div>
-        <div class="summary-row"><span>Tax</span><strong id="taxValue">$0.00</strong></div>
-        <div class="summary-row"><span>Discount</span><strong id="discountValue">$0.00</strong></div>
-        <div class="summary-row"><span>Shipping</span><strong id="shippingValue">$0.00</strong></div>
-        <div class="summary-row total"><span>Total</span><strong id="totalValue">$0.00</strong></div>
-      </div>
-    </section>
+            <div class="summary">
+              <div class="summary-row"><span>Subtotal</span><span id="previewSubtotal">৳0.00</span></div>
+              <div class="summary-row"><span>Tax</span><span id="previewTax">৳0.00</span></div>
+              <div class="summary-row"><span>Discount</span><span id="previewDiscount">৳0.00</span></div>
+              <div class="summary-row grand"><span>Total</span><span id="previewGrandTotal">৳0.00</span></div>
+            </div>
 
-    <section class="panel preview-panel">
-      <div class="panel-head">
-        <div>
-          <p class="eyebrow">Live Preview</p>
-          <h2>Invoice Preview</h2>
-          <p class="subtext">The preview updates instantly while you edit the invoice.</p>
+            <div class="bottom-grid">
+              <div class="note-box">
+                <h4>Notes / Terms</h4>
+                <div id="previewNotes" class="muted">Thank you for your business.</div>
+              </div>
+              <div class="payment-box">
+                <h4>Payment Information</h4>
+                <div><strong id="previewPaymentMethod">Bank Transfer</strong></div>
+                <div id="previewPaymentDetails" class="muted" style="margin-top:8px; white-space:pre-line;">Add payment or bank details here.</div>
+              </div>
+            </div>
+
+            <div class="footer-msg">
+              <div>Generated with Professional Invoice Generator</div>
+              <div>Authorized Signature: __________________</div>
+            </div>
+          </div>
         </div>
       </div>
-      <div id="invoicePreview" class="invoice-preview"></div>
-    </section>
+    </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="script.js"></script>
 </body>
